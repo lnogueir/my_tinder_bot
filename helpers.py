@@ -27,7 +27,7 @@ def create_message(girl_name, kind):
 	message = ''
 	if kind == 'slut' or kind == 'nerd':
 		message += "Hello " + girl_info["name"] + "!!"
-	else if kind == 'invalid_reply':
+        elif kind == 'invalid_reply':
 		message += "Sorry " + girl_name
 	message += AUTOMATIC_MESSAGES[kind]
 	return message
