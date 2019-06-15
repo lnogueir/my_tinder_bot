@@ -9,8 +9,7 @@ def match_response():
 	# print("Hello Lucas, I have recently emailed you about your new match with " + match_info['name'] + ", " + match_info['age'] + ".")
 	print("Please answer the following questions:\n")
 	will_unmatch = input("Would you like to unmatch her? ")
-	while will_unmatch != '1' and will_unmatch != '0':
-		print(will_unmatch,type(will_unmatch))
+	while will_unmatch != 1 and will_unmatch != 0 and will_unmatch != '1' and will_unmatch != '0':
 		will_unmatch = input("Invalid input, please enter 1 or 0:\n")
 	answer = bool(int(will_unmatch))
 	if answer:
@@ -19,7 +18,7 @@ def match_response():
 	while girl_type.lower() != "slut" and girl_type.lower() != "nerd":
 		girl_type = input("Enter a valid type: (slut or nerd)\n")
 	isAutomatic = input("Should I sent her an automatic message? ")
-	while isAutomatic != '1' and isAutomatic != '0':
+	while isAutomatic != '1' and isAutomatic != '0' and isAutomatic != 0 and isAutomatic != 1:
 		isAutomatic = input("Invalid input, please enter 1 or 0:\n")
 	answer = int(isAutomatic)
 	if answer:
@@ -29,4 +28,4 @@ def match_response():
 
 
 if __name__=='__main__':
-        server.run(port=5000,debug=True)
+        server.run(host='0.0.0.0',port=80,debug=True)
