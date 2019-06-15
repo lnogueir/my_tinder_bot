@@ -26,6 +26,27 @@ def match_response():
 	message = input("Enter manually the message you would want to send:\n")
 	return 	jsonify({"will_unmatch" : 0, "girl_type" : girl_type, "send_automatic" : answer, "message" : message})	
 
+@server.route('/auth_code')
+def authentication_response():
+	sms_code = input("Hey Lucas! It is time to update your tinder_token. Please enter the code we've sent you via SMS:\n")
+	return jsonify({"sms_code" : sms_code})
+
+
+@server.route('/failure')
+def failure():
+	input("OPERATION FAILED -- WE WILL REDO THE OPERATION.\nType something to agree.")
+	return jsonify({"failure":"Got it"})	
+
+
+@server.route('/success')
+def success():
+	print("SUCCESSFUL OPERATION")
+	return jsonify({"success":"Got it"})
+
+
 
 if __name__=='__main__':
         server.run(host='0.0.0.0',port=80,debug=True)
+
+
+

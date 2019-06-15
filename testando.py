@@ -1,10 +1,22 @@
 import tinder_api
 import requests
+import os
 
-url = "http://127.0.0.1:5000/match"
-r = requests.get(url)
-response = r.json()
-print(type(response['will_unmatch']))
+# r = open('config.py','r')
+# new_file = ['tinder_token = "{}"\n'.format(123456)]
+# for i,l in enumerate(r):
+# 	if i != 0:
+# 		new_file.append(l)
+# r.close()
+# r = open('config.py','w')
+# for l in new_file:
+# 	r.write(l)
+# r.close()		
+
+# url = "http://3.92.239.193:80/match"
+# r = requests.get(url)
+# response = r.json()
+# print(type(response['will_unmatch']))
 
 ##Opens all my recommendeds photos on browse 
 # import webbrowser
@@ -45,8 +57,10 @@ print(type(response['will_unmatch']))
 ##
 
 ## Get user info
-# print(tinder_api.get_self())
-
+try:
+	print(tinder_api.get_self())
+except:
+	print("cu")
 ## Get updates
 # print(tinder_api.get_updates())
 

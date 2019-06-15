@@ -72,6 +72,20 @@ class EmailSender:
 			os.remove(photos_file)	
 
 
+	def make_alert_email(self):
+		if not EmailSender.connected:
+			self.connect()
+		msg = MIMEMultipart()
+		msg["From"] = self.emailer.user
+		msg["To"] = self.emailer.receiver
+		msg["Subject"] = "Master Lucas, its time to authenticate!"
+		body = "Please turn on the server in order to get the SMS code.\n"
+		body+= "Sincerily,\n"
+		body+= "Your Bot."
+		msg.attach(MIMEText(body,'plain'))
+		self.content = msg.as_string()
+
+
 	def send_email(self):
 		if EmailSender.connected:    
 			try:
