@@ -1,3 +1,5 @@
 tinder_env
 
 __pycache__
+
+*.pyc
