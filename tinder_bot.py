@@ -219,6 +219,10 @@ class TinderBot:
 				self.swipe_right()
 			self.update()
 			time.sleep(10)	
+
+
+bot = TinderBot()
+bot.run()		
 					
 
 
