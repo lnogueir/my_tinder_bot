@@ -43,6 +43,9 @@ def success():
 	print("SUCCESSFUL OPERATION")
 	return jsonify({"success":"Got it"})
 
+@server.route('/')
+def is_active():
+	return "<h1>TOMEM NO SEUS CU</h1>"
 
 
 if __name__=='__main__':
