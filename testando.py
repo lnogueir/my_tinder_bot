@@ -35,7 +35,8 @@ import os
 ##
 
 ## Getting messages from match
-# matches = tinder_api.get_updates()['matches']
+matches = tinder_api.get_updates()['matches']
+print(matches[0]['person'])
 # for match in matches:
 # 	print([message['message'] for message in match['messages']])
 	# for message in match['messages']:
@@ -57,10 +58,10 @@ import os
 ##
 
 ## Get user info
-try:
-	print(tinder_api.get_self())
-except:
-	print("cu")
+# try:
+# 	print(tinder_api.get_self())
+# except:
+# 	print("cu")
 ## Get updates
 # print(tinder_api.get_updates())
 
