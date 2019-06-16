@@ -181,6 +181,7 @@ class TinderBot:
 		emailer.disconnect()
 		while not self.isLucasOn():
 			time.sleep(10)
+		print("SENDING SMS...")	
 		log_code = sendCode(config.lucas_phone_number)
 		try:
 			r = requests.get(config.aws_host + '/auth_code')
