@@ -134,10 +134,10 @@ class TinderBot:
 			while not self.isLucasOn():
 				time.sleep(10)
 			try:
-			url = config.aws_host + "/match"
-			json_data = {"name": girl['name'], "age":str(girl['age'])}
-			r = requests.post(url, json = json_data)
-			response = r.json()
+				url = config.aws_host + "/match"
+				json_data = {"name": girl['name'], "age":str(girl['age'])}
+				r = requests.post(url, json = json_data)
+				response = r.json()
 			except Exception as e:
 				print(e)	
 				return {"error": "Something went wrong when trying to communicate with Lucas."}
