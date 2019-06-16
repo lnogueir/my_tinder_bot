@@ -3,8 +3,9 @@ from helpers import create_message
 
 server = Flask(__name__)
 
-@server.route('/match',methods=['GET', 'POST'])
+@server.route('/match', methods = ['POST'])
 def match_response():
+	print('CU')
 	match_info = request.get_json()
 	print("Hello Lucas, I have recently emailed you about your new match with " + match_info['name'] + ", " + match_info['age'] + ".")
 	print("Please answer the following questions:\n")

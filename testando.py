@@ -16,6 +16,12 @@ l = []
 # print(l)
 # r.close()
 
+f = open('match_ids.txt','r')
+l = []
+for n in f:
+	l.append(n.rstrip("\n\r"))
+print(l)	
+
 # recommendations = tinder_api.get_recs_v2()['data']['results']
 # for i,rec in enumerate(recommendations):
 # 	photos = rec['user']['photos']
@@ -97,7 +103,7 @@ l = []
 
 ## Get user info
 # try:
-print(tinder_api.get_self())
+# print(tinder_api.get_self())
 # except:
 # 	print("cu")
 ## Get updates

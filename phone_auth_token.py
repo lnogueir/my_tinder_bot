@@ -15,7 +15,7 @@ def sendCode(number):
     if(response.get("login_request_code") == None):
         return False
     else:
-        print("SMS SEND")
+        print("SMS SENT")
         return response["login_request_code"]
 
 def getToken(number, code, req_code):
