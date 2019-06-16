@@ -76,11 +76,13 @@ class TinderBot:
 				for rec in recommendations:
 					girl_id = rec['user']['_id']
 					tinder_api.like(girl_id)
+					print('LIKED')
 					self.statistics['swipes']+=1
 					track_iterator+=1 
 					if track_iterator == LIKES_LIMIT: # Check if its time to stop liking
 						self.last_like_at = datetime.now()
 						self.update_statistics_file()
+						print('DONE LIKING')
 						break
 					time.sleep(10)	
 		except:
