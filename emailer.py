@@ -67,8 +67,6 @@ class EmailSender:
 		self.content = msg.as_string()
 		if os.path.isdir("tmpdir"):
 			shutil.rmtree("tmpdir")
-		if os.path.exists(photos_file):
-			os.remove(photos_file)	
 
 
 	def make_alert_email(self):
@@ -95,7 +93,8 @@ class EmailSender:
 				print("ERROR: "+str(e.recipients))
 			else:
 				print("EMAIL SENT SUCCESSFULLY")
-				# os.remove('attachments.zip')	        
+				if os.path.exists('girl_photos.zip'):
+					os.remove('girl_photos.zip')	        
 
 
 
