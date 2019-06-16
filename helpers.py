@@ -28,7 +28,7 @@ def get_girls_age(today,girl_bd):
 def create_message(girl_name, kind):
 	message = ''
 	if kind == 'slut' or kind == 'nerd':
-		message += "Hello " + girl_info["name"] + "!!"
+		message += "Hello " + girl_name + "!!"
 	elif kind == 'invalid_reply':
 		message += "Sorry " + girl_name
 	message += AUTOMATIC_MESSAGES[kind]
