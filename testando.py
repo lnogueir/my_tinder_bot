@@ -2,6 +2,30 @@ import tinder_api
 import requests
 import os
 
+
+recommendations = tinder_api.get_recs_v2()['data']['results']
+for i,rec in enumerate(recommendations):
+	photos = rec['user']['photos']
+	girl_id = rec['user']['_id']
+	for i,photo in enumerate(photos):
+		url = photo['processedFiles'][0]['url']
+		f = open(str(i)+'.jpg','wb')
+		try:
+			f.write(requests.get(url).content)
+		except:
+			print("ERROR DOWNLOADING IMAGES")		
+	break	
+
+f.close()
+	
+# f = open('00000001.jpg','wb')
+# try:
+# 	f.write(requests.get('https://images-ssl.gotinder.com/531f5b525322c5b615001bc1/640x640_a201d1de-d439-4d36-bc7e-d278bc197c39.jpg').content)
+# except:
+# 	print("ERROR")	
+# f.close()
+
+	
 # r = open('config.py','r')
 # new_file = ['tinder_token = "{}"\n'.format(123456)]
 # for i,l in enumerate(r):
@@ -12,6 +36,8 @@ import os
 # for l in new_file:
 # 	r.write(l)
 # r.close()		
+
+
 
 # url = "http://3.92.239.193:80/match"
 # r = requests.get(url)
@@ -35,8 +61,8 @@ import os
 ##
 
 ## Getting messages from match
-matches = tinder_api.get_updates()['matches']
-print(matches[0]['person'])
+# matches = tinder_api.get_updates()['matches']
+# print(matches[0]['person'])
 # for match in matches:
 # 	print([message['message'] for message in match['messages']])
 	# for message in match['messages']:

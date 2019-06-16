@@ -57,7 +57,7 @@ class EmailSender:
 		body+= "Sincerily,\n"
 		body+= "Your Bot."
 		msg.attach(MIMEText(body,'plain'))
-		photos_file = handle_girl_photos(girl)
+		photos_file = handle_girl_photos(girl['photos'])
 		attachment = open(photos_file,'rb')
 		part = MIMEBase('application','octet-stream')
 		part.set_payload((attachment).read())

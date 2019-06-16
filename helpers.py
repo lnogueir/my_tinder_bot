@@ -4,14 +4,15 @@ import os
 from datetime import datetime
 from automatic_messages import AUTOMATIC_MESSAGES
 
-def handle_girl_photos(photos): #Make a zip file from the selected items by the user
+def handle_girl_photos(photos): #Make a zip file of the girl's images
 	if os.path.isdir("tmpdir"):
 		shutil.rmtree("tmpdir")
 	os.mkdir("tmpdir")
 	for i,photo in enumerate(photos):
 		f = open('tmpdir/'+str(i)+'.jpg','wb')
+		image_url = photo['processedFiles'][0]['url']
 		try:
-			f.write(requests.get(photo).content)
+			f.write(requests.get(image_url).content)
 		except:
 			print("ERROR DOWNLOADING IMAGES")	
 		f.close()
