@@ -35,9 +35,9 @@ class TinderBot:
 	def isSwipeTime(self):
 		if self.last_like_at:
 			time_elapsed = (datetime.now() - self.last_like_at) # time as datetime object
-			time_elapsed = timeElapsed.total_seconds()
+			time_elapsed = time_elapsed.total_seconds()
 			time_boundary = 43200 # 12 hours -- time to swipe again
-			return (timeElapsed / time_boundary) > 1
+			return (time_elapsed / time_boundary) > 1
 		return True # First iteration
 
 	def update_statistics_file(self):
