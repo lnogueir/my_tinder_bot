@@ -47,7 +47,7 @@ class EmailSender:
 		msg["Subject"] = "Congratulations Master Lucas! You've got a new " + kind + "."
 		body = "Girl's information:\n"
 		body+= "Name: " + girl['name'] + "\n"
-		body+= "Age: " + girl['age'] + "\n"
+		body+= "Age: " + str(girl['age']) + "\n"
 		body+= "Bio: " + girl['bio'] + "\n"
 		body+= "And most importantly, her photos are attached to this email.\n"
 		if kind == 'match':
