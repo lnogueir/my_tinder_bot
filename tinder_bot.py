@@ -189,11 +189,7 @@ class TinderBot:
 		else:
 			response = r.json()
 			new_token = getToken(str(config.lucas_phone_number), str(response['sms_code']), str(log_code))
-<<<<<<< HEAD
 			self.update_token(new_token)
-=======
-			self.update_token(str(new_token))
->>>>>>> 857dd0827d196f20036e2726b5bc39049e34d140
 			time.sleep(5)
 			try:
 				tr = tinder_api.get_self()
@@ -203,11 +199,7 @@ class TinderBot:
 					r = requests.get(config.aws_host + '/auth_code')
 					response = r.json()
 					new_token = getToken(str(config.lucas_phone_number), str(response['sms_code']), str(log_code))
-<<<<<<< HEAD
 					self.update_token(new_token)
-=======
-					self.update_token(str(new_token))
->>>>>>> 857dd0827d196f20036e2726b5bc39049e34d140
 					time.sleep(5)
 					tr = tinder_api.get_self()
 				tell_lucas = requests.get(config.aws_host + '/success')
