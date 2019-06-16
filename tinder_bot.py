@@ -47,12 +47,13 @@ class TinderBot:
 		    	writer.writerow([stat] + [self.statistics[stat]])
 		    
 	def isLucasOn(self):
-		print('Whats wrong')
 		try:
 			requests.get(config.aws_host)
 		except:
+			print('Lucas not connected')
 			return False
 		else:
+			print('Lucas is connected')
 			return True	    
 
 
@@ -214,7 +215,6 @@ class TinderBot:
 			
 	def run(self):
 		while True:
-			print('WTF')
 			if self.isAuthTime():
 				self.handle_authentication()
 			if self.isSwipeTime():
