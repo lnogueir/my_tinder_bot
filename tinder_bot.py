@@ -143,6 +143,7 @@ class TinderBot:
 
 	def update(self):
 		matches = tinder_api.get_updates()['matches']
+		print(matches)
 		self.statistics['cur_matches'] = len(matches)
 		for match in matches:
 			match_id = match['_id']
@@ -154,6 +155,7 @@ class TinderBot:
 				old_messages = self.matches[match_id]['messages']
 				if self.matches[match_id] and old_messages != new_messages: # new message!
 					self.onNewMessage(old_messages,new_messages,match_id)
+		print('WTF IS GOING ON')			
 
 	def isAuthTime(self): # Every 24 hours we need a new tinder_token to make requests
 		if self.last_auth_at:
