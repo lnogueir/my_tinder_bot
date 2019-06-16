@@ -145,7 +145,7 @@ class TinderBot:
 			if bool(int(response["will_unmatch"])): # unmatch person 
 				match_id = match['_id']
 				self.current_matches.remove(match_id)
-				self.fix_id_file(match_id)
+				self.fix_id_file()
 				del self.matches[match_id]
 				return tinder_api.unmatch(match_id)
 			else:					
@@ -156,11 +156,11 @@ class TinderBot:
 	def onNewMessage(self, new_messages, match_id):
 		her_messages = get_her_messages(new_messages)
 		my_messages = get_my_messages(new_messages)
-		did_she_text_last = her_messages[-1] == new_messages[-1]
+		did_she_text_last = her_messages[-1] == new_messages[-1] if len(her_messages) != 0 else False
 		if 'WRONG HOLE' in her_messages or 'WIERD' in her_messages: # unmatch person
 			print('ARE YOU HERE FOR REAL?')
 			self.current_matches.remove(match_id)
-			self.fix_id_file(match_id)
+			self.fix_id_file()
 			del self.matches[match_id]
 			return tinder_api.unmatch(match_id)
 		if did_she_text_last:	
