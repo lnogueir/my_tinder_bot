@@ -207,6 +207,7 @@ class TinderBot:
 					tr = tinder_api.get_self()
 				tell_lucas = requests.get(config.aws_host + '/success')
 				print("NEW TOKEN UPDATED SUCCESSFULLY")
+				self.last_auth_at = datetime.now()
 			except:
 				print('WIERD ERROR')	
 
