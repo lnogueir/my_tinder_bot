@@ -190,7 +190,7 @@ class TinderBot:
 			print("ERROR CONNECTING WITH LUCAS")
 		else:
 			response = r.json()
-			new_token = getToken(str(config.lucas_phone_number), str(response['sms_code']), str(log_code))	
+			new_token = getToken(str(config.lucas_phone_number), str(response['sms_code']), log_code)	
 			self.update_token(new_token)
 			time.sleep(5)
 			try:
@@ -200,7 +200,7 @@ class TinderBot:
 					log_code = sendCode(config.lucas_phone_number)
 					r = requests.get(config.aws_host + '/auth_code')
 					response = r.json()
-					new_token = getToken(str(config.lucas_phone_number), str(response['sms_code']), str(log_code))
+					new_token = getToken(str(config.lucas_phone_number), str(response['sms_code']), log_code)
 					self.update_token(new_token)
 					time.sleep(5)
 					tr = tinder_api.get_self()
