@@ -6,8 +6,7 @@ server = Flask(__name__)
 @server.route('/match', methods = ['POST'])
 def match_response():
 	match_info = request.get_json()
-	print(match_info['name'])
-	# print("Hello Lucas, I have recently emailed you about your new match with " + match_info['name'] + ", " + match_info['age'] + ".")
+	print("Hello Lucas, I have recently emailed you about your new match with " + match_info['name'] + ", " + match_info['age'] + ".")
 	print("Please answer the following questions:\n")
 	will_unmatch = input("Would you like to unmatch her? ")
 	while will_unmatch != 1 and will_unmatch != 0 and will_unmatch != '1' and will_unmatch != '0':

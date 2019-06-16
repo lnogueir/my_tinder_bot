@@ -133,15 +133,14 @@ class TinderBot:
 			emailer.disconnect()
 			while not self.isLucasOn():
 				time.sleep(10)
-			# try:
+			try:
 			url = config.aws_host + "/match"
 			json_data = {"name": girl['name'], "age":str(girl['age'])}
-			json_string = json.dumps(json_data)
-			r = requests.post(url, json = json_string)
-			print(r)
-			# except Exception as e:
-			# 	print(e)	
-			# 	return {"error": "Something went wrong when trying to communicate with Lucas."}
+			r = requests.post(url, json = json_data)
+			response = r.json()
+			except Exception as e:
+				print(e)	
+				return {"error": "Something went wrong when trying to communicate with Lucas."}
 			if bool(int(response["will_unmatch"])): # unmatch person 
 				match_id = match['_id']
 				self.current_matches.remove(match_id)
