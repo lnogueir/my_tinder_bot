@@ -10,7 +10,7 @@ HEADERS = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_2_5 like Mac OS 
 def sendCode(number):
     URL = CODE_REQUEST_URL.replace("#placeholder", number)
     r = requests.post(URL, headers=HEADERS, verify=False)
-    print(r.url)
+    # print(r.url)
     response = r.json()
     if(response.get("login_request_code") == None):
         return False

@@ -50,10 +50,10 @@ class TinderBot:
 		try:
 			requests.get(config.aws_host)
 		except:
-			print('Lucas not connected')
+			print('LUCAS IS NOT CONNECTED')
 			return False
 		else:
-			print('Lucas is connected')
+			print('LUCAS IS CONNECTED')
 			return True	    
 
 
@@ -80,7 +80,7 @@ class TinderBot:
 
 	def onMatch(self,match):
 		self.statistics['total_matches']+=1
-		self.statistics['match_rate'] = self.statistics['total_matches']/self.statistics['swipes']
+		self.statistics['match_rate'] = self.statistics['total_matches']/ self.statistics['swipes'] if self.statistics['swipes'] != 0 else 0
 		girl = match['person']
 		self.matches[match['_id']] = {
 			'name': girl['name'],
@@ -217,8 +217,8 @@ class TinderBot:
 		while True:
 			if self.isAuthTime():
 				self.handle_authentication()
-			if self.isSwipeTime():
-				self.swipe_right()
+			# if self.isSwipeTime():
+			# 	self.swipe_right()
 			self.update()
 			time.sleep(10)	
 

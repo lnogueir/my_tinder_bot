@@ -78,7 +78,8 @@ class EmailSender:
 		msg["From"] = self.emailer.user
 		msg["To"] = self.emailer.receiver
 		msg["Subject"] = "Master Lucas, its time to authenticate!"
-		body = "Please turn on the server in order to get the SMS code.\n"
+		body = "Please check if your server is on in so we can send you an SMS with your new token.\n"
+		body+= "If it is, please enter the code on your terminal.\n"
 		body+= "Sincerily,\n"
 		body+= "Your Bot."
 		msg.attach(MIMEText(body,'plain'))
