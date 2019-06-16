@@ -182,7 +182,7 @@ class TinderBot:
 						emailer.disconnect()
 					else:
 						tinder_api.send_msg(match_id,create_message(self.matches[match_id]['name'], "more"))			
-		elif :
+		elif False:
 			tinder_api.send_msg(match_id,create_message(self.matches[match_id]['name'],"invalid_reply"))			
 
 	def update(self):
