@@ -13,7 +13,7 @@ def match_response():
 		will_unmatch = raw_input("Invalid input, please enter 1 or 0:\n")
 	answer = bool(int(will_unmatch))
 	if answer:
-		return jsonify({"will_unmatch" : 1, "girl_type" : None, "send_automatic" : None, "message" : None})
+		return jsonify({"will_unmatch" : 1, "message" : None})
 	girl_type = raw_input("Is the girl slut or nerd? ")
 	while girl_type.lower() != "slut" and girl_type.lower() != "nerd":
 		girl_type = raw_input("Enter a valid type: (slut or nerd)\n")
@@ -22,9 +22,9 @@ def match_response():
 		isAutomatic = raw_input("Invalid input, please enter 1 or 0:\n")
 	answer = int(isAutomatic)
 	if answer:
-		return jsonify({"will_unmatch" : 0, "girl_type" : girl_type, "send_automatic" : answer, "message" : create_message(match_info['name'], girl_type)})
+		return jsonify({"will_unmatch" : 0, "message" : create_message(match_info['name'], girl_type)})
 	message = raw_input("Enter manually the message you would want to send:\n")
-	return 	jsonify({"will_unmatch" : 0, "girl_type" : girl_type, "send_automatic" : answer, "message" : message})	
+	return 	jsonify({"will_unmatch" : 0, "message" : message})	
 
 @server.route('/auth_code')
 def authentication_response():

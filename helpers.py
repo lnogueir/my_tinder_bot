@@ -34,5 +34,12 @@ def create_message(girl_name, kind):
 	message += AUTOMATIC_MESSAGES[kind]
 	return message
 
+def get_her_messages(new_messages):
+	return [message for message in new_messages if (message != AUTOMATIC_MESSAGES['nerd'] and message != AUTOMATIC_MESSAGES['slut'] and message != AUTOMATIC_MESSAGES['invalid_reply'] and message != AUTOMATIC_MESSAGES['YES DADDY'] and message != AUTOMATIC_MESSAGES['more'])]
+
+def get_my_messages(new_messages):
+	return [message for message in new_messages if not (message != AUTOMATIC_MESSAGES['nerd'] and message != AUTOMATIC_MESSAGES['slut'] and message != AUTOMATIC_MESSAGES['invalid_reply'] and message != AUTOMATIC_MESSAGES['YES DADDY'] and message != AUTOMATIC_MESSAGES['more'])]
+
+
 
 

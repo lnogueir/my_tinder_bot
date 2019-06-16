@@ -2,7 +2,7 @@
 ## My files ##
 import config, tinder_api 
 from emailer import EmailSender
-from helpers import get_girls_age, create_message
+from helpers import get_girls_age, create_message, get_her_messages, get_my_messages
 from phone_auth_token import sendCode, getToken
 from automatic_messages import AUTOMATIC_MESSAGES
 ##
@@ -120,7 +120,7 @@ class TinderBot:
 		}
 		if self.isNewMatch(match['_id']): ## New match!!
 			self.statistics['total_matches']+=1
-			self.statistics['match_rate'] = self.statistics['total_matches']/ self.statistics['swipes'] if self.statistics['swipes'] != 0 else 0
+			self.statistics['match_rate'] = self.statistics['total_matches'] / self.statistics['swipes'] if self.statistics['swipes'] != 0 else 0
 			self.update_statistics_file()
 			f = open('match_ids.txt','a')
 			f.write(str(match['_id'])+'\n')
@@ -148,42 +148,33 @@ class TinderBot:
 				self.fix_id_file(match_id)
 				del self.matches[match_id]
 				return tinder_api.unmatch(match_id)
-			else:	
-				self.matches[match['_id']].update({"girl_type" : response['girl_type']})
-				self.matches[match['_id']].update({"send_automatic" : bool(response['send_automatic'])})
+			else:					
 				return tinder_api.send_msg(match['_id'], response['message'])
 			
 					
 
-	def onNewMessage(self, old_messages, new_messages, match_id):
-		total_computed_messages = len(old_messages)
-		valid_messages={}
-		if 'WRONG HOLE' in new_messages or 'WIERD' in new_messages: # unmatch person
+	def onNewMessage(self, new_messages, match_id):
+		her_messages = get_her_messages(new_messages)
+		my_messages = get_my_messages(new_messages)
+		did_she_text_last = her_messages[-1] == new_messages[-1]
+		if 'WRONG HOLE' in her_messages or 'WIERD' in her_messages: # unmatch person
 			print('ARE YOU HERE FOR REAL?')
 			self.current_matches.remove(match_id)
 			self.fix_id_file(match_id)
 			del self.matches[match_id]
 			return tinder_api.unmatch(match_id)
-		print(new_messages)	
-		if 'YES DADDY' in new_messages or 'LETS GO' in new_messages:
-			valid_messages.update({'YES DADDY':old_messages['YES DADDY']})
-		if 'MORE' in new_messages:
-			valid_messages.update({'MORE':old_messages['MORE']})
-		if len(valid_messages) > 0: #There has been at least one valid message
-			for m in sorted(valid_messages):
-				if valid_messages[m] > total_computed_messages:
-					if 'YES DADDY' == m: #New date!!
-						tinder_api.send_msg(match_id,create_message(self.matches[match_id]['name'],"YES DADDY"))
-						self.matches[match_id]['send_automatic'] = False
-						emailer = EmailSender()
-						emailer.connect()
-						emailer.make_email(girl,'date')
-						emailer.send_email()
-						emailer.disconnect()
-					else:
-						tinder_api.send_msg(match_id,create_message(self.matches[match_id]['name'], "more"))			
-		elif False:
-			tinder_api.send_msg(match_id,create_message(self.matches[match_id]['name'],"invalid_reply"))			
+		if did_she_text_last:	
+			if ('YES DADDY' in her_messages or 'LETS GO' in her_messages) and AUTOMATIC_MESSAGES['YES DADDY'] not in my_messages:
+				tinder_api.send_msg(match_id,create_message(self.matches[match_id]['name'],"YES DADDY"))
+				emailer = EmailSender()
+				emailer.connect()
+				emailer.make_email(girl,'date')
+				emailer.send_email()
+				emailer.disconnect()
+			elif 'MORE' == her_messages[-1]:
+				tinder_api.send_msg(match_id,create_message(self.matches[match_id]['name'], "more"))
+			elif not AUTOMATIC_MESSAGES['YES DADDY'] not in my_messages: # This means that I am talking to her now
+				tinder_api.send_msg(match_id,create_message(self.matches[match_id]['name'],"invalid_reply"))			
 
 	def update(self):
 		matches = tinder_api.get_updates()['matches']
@@ -194,9 +185,8 @@ class TinderBot:
 				self.onMatch(match)
 			else:
 				new_messages = [message_obj['message'] for message_obj in match['messages']]
-				old_messages = self.matches[match_id]['messages']
 				if self.matches[match_id] and old_messages != new_messages: # new message!
-					self.onNewMessage(old_messages,new_messages,match_id)
+					self.onNewMessage(new_messages,match_id)
 
 	def isAuthTime(self): # Every 24 hours we need a new tinder_token to make requests
 		if self.last_auth_at:
