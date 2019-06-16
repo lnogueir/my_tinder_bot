@@ -164,6 +164,7 @@ class TinderBot:
 			self.fix_id_file(match_id)
 			del self.matches[match_id]
 			return tinder_api.unmatch(match_id)
+		print(new_messages)	
 		if 'YES DADDY' in new_messages or 'LETS GO' in new_messages:
 			valid_messages.update({'YES DADDY':old_messages['YES DADDY']})
 		if 'MORE' in new_messages:
@@ -180,10 +181,8 @@ class TinderBot:
 						emailer.send_email()
 						emailer.disconnect()
 					else:
-						tinder_api.send_msg(match_id,create_message(self.matches[match_id]['name'], "more"))		
-					
-				
-		elif AUTOMATIC_MESSAGES['more'] not in new_message[-1] or AUTOMATIC_MESSAGES['YES DADDY'] not in new_message[-1] or AUTOMATIC_MESSAGES['invalid_reply'] not in new_message[-1] or AUTOMATIC_MESSAGES['nerd'] not in new_message[-1] or AUTOMATIC_MESSAGES['slut'] not in new_message[-1] or 'MORE' not in new_messages or 'YES DADDY' not in new_messages or 'LETS GO' not in new_messages:
+						tinder_api.send_msg(match_id,create_message(self.matches[match_id]['name'], "more"))			
+		elif :
 			tinder_api.send_msg(match_id,create_message(self.matches[match_id]['name'],"invalid_reply"))			
 
 	def update(self):
