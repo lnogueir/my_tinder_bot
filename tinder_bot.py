@@ -4,6 +4,7 @@ import config, tinder_api
 from emailer import EmailSender
 from helpers import get_girls_age, create_message
 from phone_auth_token import sendCode, getToken
+from automatic_messages import AUTOMATIC_MESSAGES
 ##
 
 from datetime import datetime
@@ -182,7 +183,7 @@ class TinderBot:
 						tinder_api.send_msg(match_id,create_message(self.matches[match_id]['name'], "more"))		
 					
 				
-		elif 'MORE' not in new_messages or 'YES DADDY' not in new_messages or 'LETS GO' not in new_messages:
+		elif AUTOMATIC_MESSAGES['more'] not in new_message[-1] or AUTOMATIC_MESSAGES['YES DADDY'] not in new_message[-1] or AUTOMATIC_MESSAGES['invalid_reply'] not in new_message[-1] or AUTOMATIC_MESSAGES['nerd'] not in new_message[-1] or AUTOMATIC_MESSAGES['slut'] not in new_message[-1] or 'MORE' not in new_messages or 'YES DADDY' not in new_messages or 'LETS GO' not in new_messages:
 			tinder_api.send_msg(match_id,create_message(self.matches[match_id]['name'],"invalid_reply"))			
 
 	def update(self):
