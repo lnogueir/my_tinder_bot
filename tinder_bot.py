@@ -28,12 +28,12 @@ class TinderBot:
 			 		self.statistics[row[0]] = row[1]
 		self.current_matches = []
 		match_ids_path = "match_ids.txt"
-		if os.path.exists(match_path):
-			with open(match_path, 'r') as ids_file:
+		if os.path.exists(match_ids_path):
+			with open(match_ids_path, 'r') as ids_file:
 				for _id in ids_file:
 			 		self.current_matches.append(_id.rstrip("\n\r")) 
 		else:
-			open(match_path,'w').close()	 					 		
+			open(match_ids_path,'w').close()	 					 		
 		self.account_token = config.tinder_token
 		self.matches = {}
 		self.last_like_at = None
