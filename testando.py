@@ -2,21 +2,33 @@ import tinder_api
 import requests
 import os
 
+l = []
 
-recommendations = tinder_api.get_recs_v2()['data']['results']
-for i,rec in enumerate(recommendations):
-	photos = rec['user']['photos']
-	girl_id = rec['user']['_id']
-	for i,photo in enumerate(photos):
-		url = photo['processedFiles'][0]['url']
-		f = open(str(i)+'.jpg','wb')
-		try:
-			f.write(requests.get(url).content)
-		except:
-			print("ERROR DOWNLOADING IMAGES")		
-	break	
+open('match_ids.txt','w').close()
+statistic = open('match_ids.txt','a')
+statistic.write('123123123'+'\n')
+statistic.write('123123123'+'\n')
+statistic.write('123123123'+'\n')
+statistic.close()
+r = open('match_ids.txt','r')
+for n in r:
+	l.append(n.rstrip("\n\r"))
+print(l)
+r.close()
 
-f.close()
+# recommendations = tinder_api.get_recs_v2()['data']['results']
+# for i,rec in enumerate(recommendations):
+# 	photos = rec['user']['photos']
+# 	girl_id = rec['user']['_id']
+# 	for i,photo in enumerate(photos):
+# 		url = photo['processedFiles'][0]['url']
+# 		f = open(str(i)+'.jpg','wb')
+# 		try:
+# 			f.write(requests.get(url).content)
+# 		except:
+# 			print("ERROR DOWNLOADING IMAGES")		
+# 	break	
+# f.close()
 	
 # f = open('00000001.jpg','wb')
 # try:

@@ -26,6 +26,14 @@ class TinderBot:
 				csv_data = csv.reader(csvfile, delimiter=' ', quotechar='|')
 				for row in csv_data:
 			 		self.statistics[row[0]] = row[1]
+		self.current_matches = []
+		match_ids_path = "match_ids.txt"
+		if os.path.exists(match_path):
+			with open(match_path, 'r') as ids_file:
+				for _id in ids_file:
+			 		self.current_matches.append(_id.rstrip("\n\r")) 
+		else:
+			open(match_path,'w').close()	 					 		
 		self.account_token = config.tinder_token
 		self.matches = {}
 		self.last_like_at = None
@@ -77,10 +85,20 @@ class TinderBot:
 			print('ERROR')
 
 
+	def isNewMatch(self,match_id):
+		return match_id in self.current_matches
 
-	def onMatch(self,match):
-		self.statistics['total_matches']+=1
-		self.statistics['match_rate'] = self.statistics['total_matches']/ self.statistics['swipes'] if self.statistics['swipes'] != 0 else 0
+
+	def fix_id_file(self):
+		open('match_ids.txt','w').close()
+		f = open('match_ids.txt','a')
+		for _id in self.current_matches:
+			f.write(str(_id)+'\n')
+		f.close()
+
+
+	def onMatch(self,match):  
+## onMatch will be called always if its the first iteration, so we update self.match before check if is new match
 		girl = match['person']
 		self.matches[match['_id']] = {
 			'name': girl['name'],
@@ -89,34 +107,45 @@ class TinderBot:
 			'photos': [photo_obj['processedFiles'][0]['url'] for photo_obj in girl['photos']], # get url for each photo of the girl
 			'bio': girl['bio']
 		}
-		girl = self.matches[match['_id']]
-		emailer = EmailSender()
-		emailer.connect()
-		emailer.make_email(girl,'match')
-		emailer.send_email()
-		emailer.disconnect()
-		while not self.isLucasOn():
-			time.sleep(10)
-		try:
-			url = config.aws_host + "/match"
-			r = requests.post(url,headers={"content-type": "application/json"},data=girl)
-			response = r.json()
-		except Exception as e:
-			print(e)	
-			return {"error": "Something went wrong when trying to communicate with Lucas."}
-		if bool(response["will_unmatch"]):
-			match_id = match['_id']
-			del self.matches[match_id]
-			return tinder_api.unmatch(match_id)
-		else:	
-			self.matches[match['_id']].update({"girl_type" : response['girl_type']})
-			self.matches[match['_id']].update({"send_automatic" : bool(response['send_automatic'])})
-			return tinder_api.send_msg(match['_id'], response['message'])
+		if self.isNewMatch(match['_id']): ## New match!!
+			self.statistics['total_matches']+=1
+			self.statistics['match_rate'] = self.statistics['total_matches']/ self.statistics['swipes'] if self.statistics['swipes'] != 0 else 0
+			open('match_ids.txt','a').write(str(match['_id'])).close() # update ids file
+			self.current_matches.append(str(match['_id']))
+			girl = self.matches[match['_id']]
+			emailer = EmailSender() # Email Lucas about new match
+			emailer.connect()
+			emailer.make_email(girl,'match')
+			emailer.send_email()
+			emailer.disconnect()
+			while not self.isLucasOn():
+				time.sleep(10)
+			try:
+				url = config.aws_host + "/match"
+				r = requests.post(url,headers={"content-type": "application/json"},data=girl)
+				response = r.json()
+			except Exception as e:
+				print(e)	
+				return {"error": "Something went wrong when trying to communicate with Lucas."}
+			if bool(int(response["will_unmatch"])): # unmatch person 
+				match_id = match['_id']
+				self.current_matches.remove(match_id)
+				self.fix_id_file(match_id)
+				del self.matches[match_id]
+				return tinder_api.unmatch(match_id)
+			else:	
+				self.matches[match['_id']].update({"girl_type" : response['girl_type']})
+				self.matches[match['_id']].update({"send_automatic" : bool(response['send_automatic'])})
+				return tinder_api.send_msg(match['_id'], response['message'])
+			
+					
 
 	def onNewMessage(self, old_messages, new_messages, match_id):
 		total_computed_messages = len(old_messages)
 		valid_messages={}
-		if 'WRONG HOLE' or 'WIERD' in new_messages:
+		if 'WRONG HOLE' or 'WIERD' in new_messages: # unmatch person
+			self.current_matches.remove(match_id)
+			self.fix_id_file(match_id)
 			del self.matches[match_id]
 			return tinder_api.unmatch(match_id)
 		if 'YES DADDY' or 'LETS GO' in new_messages:
@@ -143,19 +172,16 @@ class TinderBot:
 
 	def update(self):
 		matches = tinder_api.get_updates()['matches']
-		print(matches)
 		self.statistics['cur_matches'] = len(matches)
 		for match in matches:
 			match_id = match['_id']
 			if match_id not in self.matches: # new match !!
-				print("AM I HERE?") 
 				self.onMatch(match)
 			else:
 				new_messages = [message_obj['message'] for message_obj in match['messages']]
 				old_messages = self.matches[match_id]['messages']
 				if self.matches[match_id] and old_messages != new_messages: # new message!
 					self.onNewMessage(old_messages,new_messages,match_id)
-		print('WTF IS GOING ON')			
 
 	def isAuthTime(self): # Every 24 hours we need a new tinder_token to make requests
 		if self.last_auth_at:
@@ -214,17 +240,13 @@ class TinderBot:
 			except:
 				print('WIERD ERROR')	
 
-
-			
-		
-
 			
 	def run(self):
 		while True:
 			if self.isAuthTime():
 				self.handle_authentication()
-			# if self.isSwipeTime():
-			# 	self.swipe_right()
+			if self.isSwipeTime():
+				self.swipe_right()
 			self.update()
 			time.sleep(10)	
 
