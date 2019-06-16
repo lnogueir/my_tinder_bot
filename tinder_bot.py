@@ -137,7 +137,7 @@ class TinderBot:
 			url = config.aws_host + "/match"
 			json_data = {"name": girl['name'], "age":str(girl['age'])}
 			json_string = json.dumps(json_data)
-			r = requests.post(url, data = json_string)
+			r = requests.post(url, json = json_string)
 			print(r)
 			# except Exception as e:
 			# 	print(e)	
