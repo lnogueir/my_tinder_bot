@@ -6,7 +6,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 from helpers import handle_girl_photos
-import os
+import os, shutil
 
 
 
