@@ -85,10 +85,11 @@ class TinderBot:
 		self.matches[match['_id']] = {
 			'name': girl['name'],
 			'age': get_girls_age(datetime.now(), girl['birth_date']),
-			'messages': {message_obj['message']:i for i,message_obj in enumerate(match['messages'])},
+			'messages': {message_obj['message']:i for i, message_obj in enumerate(match['messages'])},
 			'photos': [photo_obj['processedFiles'][0]['url'] for photo_obj in girl['photos']], # get url for each photo of the girl
 			'bio': girl['bio']
 		}
+		girl = self.matches[match['_id']]
 		emailer = EmailSender()
 		emailer.connect()
 		emailer.make_email(girl,'match')
