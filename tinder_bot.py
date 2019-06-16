@@ -157,9 +157,9 @@ class TinderBot:
 	def isAuthTime(self): # Every 24 hours we need a new tinder_token to make requests
 		if self.last_auth_at:
 			time_elapsed = (datetime.now() - self.last_auth_at) # time as datetime object
-			time_elapsed = timeElapsed.total_seconds()
+			time_elapsed = time_elapsed.total_seconds()
 			time_boundary = 86400 # 24 hours -- time to auth again
-			return (timeElapsed / time_boundary) > 1
+			return (time_elapsed / time_boundary) > 1
 		return True # First iteration
 
 	def update_token(self,token):
