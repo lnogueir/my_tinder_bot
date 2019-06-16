@@ -135,7 +135,9 @@ class TinderBot:
 				time.sleep(10)
 			# try:
 			url = config.aws_host + "/match"
-			r = requests.post(url, data = {"name":girl['name'] , "age" : str(girl['age'])})
+			json_data = {"name": girl['name'], "age":str(girl['age'])}
+			json_string = json.dumps(json_data)
+			r = requests.post(url, data = json_string)
 			print(r)
 			# except Exception as e:
 			# 	print(e)	
