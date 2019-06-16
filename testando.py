@@ -4,17 +4,17 @@ import os
 
 l = []
 
-open('match_ids.txt','w').close()
-statistic = open('match_ids.txt','a')
-statistic.write('123123123'+'\n')
-statistic.write('123123123'+'\n')
-statistic.write('123123123'+'\n')
-statistic.close()
-r = open('match_ids.txt','r')
-for n in r:
-	l.append(n.rstrip("\n\r"))
-print(l)
-r.close()
+# open('match_ids.txt','w').close()
+# statistic = open('match_ids.txt','a')
+# statistic.write('123123123'+'\n')
+# statistic.write('123123123'+'\n')
+# statistic.write('123123123'+'\n')
+# statistic.close()
+# r = open('match_ids.txt','r')
+# for n in r:
+# 	l.append(n.rstrip("\n\r"))
+# print(l)
+# r.close()
 
 # recommendations = tinder_api.get_recs_v2()['data']['results']
 # for i,rec in enumerate(recommendations):
@@ -97,7 +97,7 @@ r.close()
 
 ## Get user info
 # try:
-# 	print(tinder_api.get_self())
+print(tinder_api.get_self())
 # except:
 # 	print("cu")
 ## Get updates

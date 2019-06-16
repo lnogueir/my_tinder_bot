@@ -26,6 +26,8 @@ class TinderBot:
 				csv_data = csv.reader(csvfile, delimiter=' ', quotechar='|')
 				for row in csv_data:
 			 		self.statistics[row[0]] = row[1]
+		else:
+			open(statistics_path,'w').close()	 					 			 		
 		self.current_matches = []
 		match_ids_path = "match_ids.txt"
 		if os.path.exists(match_ids_path):
@@ -70,7 +72,7 @@ class TinderBot:
 		try:
 			track_iterator = 0
 			while track_iterator <= LIKES_LIMIT:
-				recommendations = tinder_api.get_recommendations()['data']['results']
+				recommendations = tinder_api.get_recs_v2()['data']['results']
 				for rec in recommendations:
 					girl_id = rec['user']['_id']
 					tinder_api.like(girl_id)
@@ -110,6 +112,7 @@ class TinderBot:
 		if self.isNewMatch(match['_id']): ## New match!!
 			self.statistics['total_matches']+=1
 			self.statistics['match_rate'] = self.statistics['total_matches']/ self.statistics['swipes'] if self.statistics['swipes'] != 0 else 0
+			self.update_statistics_file()
 			open('match_ids.txt','a').write(str(match['_id'])).close() # update ids file
 			self.current_matches.append(str(match['_id']))
 			girl = self.matches[match['_id']]
