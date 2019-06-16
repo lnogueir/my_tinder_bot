@@ -146,7 +146,8 @@ class TinderBot:
 		self.statistics['cur_matches'] = len(matches)
 		for match in matches:
 			match_id = match['_id']
-			if match_id not in self.matches: # new match !! 
+			if match_id not in self.matches: # new match !!
+				print("AM I HERE?") 
 				self.onMatch(match)
 			else:
 				new_messages = [message_obj['message'] for message_obj in match['messages']]
