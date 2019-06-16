@@ -14,9 +14,9 @@ def match_response():
 	answer = bool(int(will_unmatch))
 	if answer:
 		return jsonify({"will_unmatch" : 1, "girl_type" : None, "send_automatic" : None, "message" : None})
-	girl_type = str(input("Is the girl slut or nerd? "))
-	while girl_type.lower() != "slut" and girl_type.lower() != "nerd":
-		girl_type = input("Enter a valid type: (slut or nerd)\n")
+	girl_type = input("Is the girl slut or nerd? ")
+	# while girl_type.lower() != "slut" and girl_type.lower() != "nerd":
+	# 	girl_type = input("Enter a valid type: (slut or nerd)\n")
 	isAutomatic = input("Should I sent her an automatic message? ")
 	while isAutomatic != '1' and isAutomatic != '0' and isAutomatic != 0 and isAutomatic != 1:
 		isAutomatic = input("Invalid input, please enter 1 or 0:\n")
