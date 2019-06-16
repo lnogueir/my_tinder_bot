@@ -185,6 +185,7 @@ class TinderBot:
 				self.onMatch(match)
 			else:
 				new_messages = [message_obj['message'] for message_obj in match['messages']]
+				old_messages = self.matches[match_id]['messages']
 				if self.matches[match_id] and old_messages != new_messages: # new message!
 					self.onNewMessage(new_messages,match_id)
 
