@@ -1,6 +1,7 @@
 import requests
 import shutil
 import os
+from datetime import datetime
 from automatic_messages import AUTOMATIC_MESSAGES
 
 def handle_girl_photos(photos): #Make a zip file from the selected items by the user
@@ -19,6 +20,7 @@ def handle_girl_photos(photos): #Make a zip file from the selected items by the 
 
 def get_girls_age(today,girl_bd):
 	clean_birth_date = girl_bd[:-5] + 'Z' 
+	birth_date_obj = datetime.strptime(clean_birth_date, '%Y-%m-%dT%H:%M:%SZ')
 	age_obj = today - clean_birth_date
 	return int(age_obj.days/365)
 
