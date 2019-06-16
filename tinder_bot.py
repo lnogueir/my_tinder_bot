@@ -66,10 +66,11 @@ class TinderBot:
 
 
 	def swipe_right(self):
+		LIKES_LIMIT = 85 #Tinder has a limit of 100 like per 12 hours, like 85 so we are safe.
 		try:
-			LIKES_LIMIT = 85 #Tinder has a limit of 100 like per 12 hours, like 85 so we are safe.
 			track_iterator = 0
 			while track_iterator <= LIKES_LIMIT:
+				print("I AM HERE")
 				recommendations = tinder_api.get_recommendations()['data']['results']
 				for rec in recommendations:
 					girl_id = rec['user']['_id']
