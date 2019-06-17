@@ -1,7 +1,7 @@
 
 ## My files ##
 import config, tinder_api 
-from emailer import EmailSender
+from emailer import Emailer
 from helpers import get_girls_age, create_message, get_her_messages, get_my_messages
 from phone_auth_token import sendCode, getToken
 from automatic_messages import AUTOMATIC_MESSAGES
@@ -22,15 +22,15 @@ class TinderBot:
 	def __init__(self):
 		self.statistics	= {'total_matches' : 0, 'swipes': 0, 'cur_matches': 0, 'match_rate' : 0}
 		statistics_path = 'tinder_statistics.csv'
-		if os.path.exists(statistics_path):
+		if os.path.exists(statistics_path): # Get current statistics
 			with open(statistics_path, newline='') as csvfile:
 				csv_data = csv.reader(csvfile, delimiter=' ', quotechar='|')
 				for row in csv_data:
 			 		self.statistics[row[0]] = float(row[1])
 		else:
 			open(statistics_path,'w').close()	 					 			 		
-		self.current_matches = []
-		match_ids_path = "match_ids.txt"
+		self.current_matches = [] 
+		match_ids_path = "match_ids.txt" # Get already existing matches
 		if os.path.exists(match_ids_path):
 			with open(match_ids_path, 'r') as ids_file:
 				for _id in ids_file:
@@ -41,6 +41,7 @@ class TinderBot:
 		self.matches = {}
 		self.last_like_at = None
 		self.last_auth_at = None
+		self.emailer = Emailer()
 
 
 	def isSwipeTime(self):
@@ -127,11 +128,10 @@ class TinderBot:
 			f.close() # updates ids file
 			self.current_matches.append(str(match['_id']))
 			girl = self.matches[match['_id']]
-			emailer = EmailSender() # Email Lucas about new match
-			emailer.connect()
-			emailer.make_email(girl,'match')
-			emailer.send_email()
-			emailer.disconnect()
+			self.emailer.connect() # Email Lucas about new match
+			self.emailer.make_email(girl,'match')
+			self.emailer.send_email()
+			self.emailer.disconnect()
 			while not self.isLucasOn():
 				time.sleep(10)
 			try:
@@ -166,15 +166,18 @@ class TinderBot:
 		if did_she_text_last:	
 			if ('YES DADDY' in her_messages or 'LETS GO' in her_messages) and AUTOMATIC_MESSAGES['YES DADDY'] not in my_messages:
 				tinder_api.send_msg(match_id,create_message(self.matches[match_id]['name'],"YES DADDY"))
-				emailer = EmailSender()
-				emailer.connect()
-				emailer.make_email(girl,'date')
-				emailer.send_email()
-				emailer.disconnect()
+				print("NEW DATE FOUND -- YES DADDY MESSAGE SENT")
+				self.emailer.connect() # Tell Lucas about new date
+				girl = self.matches[match_id]
+				self.emailer.make_email(girl,'date')
+				self.emailer.send_email()
+				self.emailer.disconnect()
 			elif 'MORE' == her_messages[-1]:
 				tinder_api.send_msg(match_id,create_message(self.matches[match_id]['name'], "more"))
+				print("MORE MESSAGE SENT")
 			elif not AUTOMATIC_MESSAGES['YES DADDY'] not in my_messages: # This means that I am talking to her now
 				tinder_api.send_msg(match_id,create_message(self.matches[match_id]['name'],"invalid_reply"))			
+				print("INVALID REPLY MESSAGE SENT")
 
 	def update(self):
 		matches = tinder_api.get_updates()['matches']
@@ -210,11 +213,10 @@ class TinderBot:
 		r.close()
 
 	def handle_authentication(self):
-		emailer = EmailSender()
-		emailer.connect()
-		emailer.make_alert_email()
-		emailer.send_email()
-		emailer.disconnect()
+		self.emailer.connect() # Tell Luca to get SMS code
+		self.emailer.make_alert_email()
+		self.emailer.send_email()
+		self.emailer.disconnect()
 		while not self.isLucasOn():
 			time.sleep(10)
 		print("SENDING SMS...")	
@@ -244,7 +246,8 @@ class TinderBot:
 				print("NEW TOKEN UPDATED SUCCESSFULLY")
 				self.last_auth_at = datetime.now()
 			except:
-				print('WIERD ERROR')	
+				print('ERROR AUTHENTICATING')
+				exit()	
 
 			
 	def run(self):

@@ -1,4 +1,4 @@
-tinder_token = "3691d581-1dbf-47d6-857d-84401742ef0f"
+tinder_token = "9ce93d54-8576-4493-bfd5-c283b3035b0d"
 host = 'https://api.gotinder.com'
 aws_host = "http://3.92.239.193"
 lucas_phone_number = '12269785884'

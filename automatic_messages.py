@@ -12,6 +12,6 @@ AUTOMATIC_MESSAGES = {
 			"He came to live in Canada to study Computer Engineering at the University Of Waterloo.\n"
 			"Even though, all this seems pretty nerdy (my creation), he isn't quite one all the time.\n"
 			"Things he enjoy: music, women, gym, programming/maths/physics, hanging out with my family, partying once in a while, travelling, drinking a beer w/ his buddies.\n"
-			"Notice that these aren't in order of priority."
+			"Note that these aren't in order of priority."
 			"To learn more, confirm with YES DADDY. If you want to unsubscribe type WRONG HOLE.")
 }

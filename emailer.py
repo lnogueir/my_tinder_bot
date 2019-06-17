@@ -10,7 +10,7 @@ import os, shutil
 
 
 
-class EmailSender:
+class Emailer:
 	connected=False
 	connection=None
 	def __init__(self):
@@ -18,7 +18,7 @@ class EmailSender:
 		self.content=None
 
 	def connect(self):
-		if not EmailSender.connected:
+		if not Emailer.connected:
 			try:
 				connection = smtplib.SMTP('smtp.gmail.com',587)
 				connection.ehlo()
@@ -29,8 +29,8 @@ class EmailSender:
 				error_message=e.smtp_error
 				print('ERROR CONNECTING:'+str(error_message))
 			else:
-				EmailSender.connected=True
-				EmailSender.connection = connection
+				Emailer.connected=True
+				Emailer.connection = connection
 
 	@classmethod
 	def disconnect(cls):
@@ -39,55 +39,61 @@ class EmailSender:
 			cls.connected=False
 
 	def make_email(self,girl,kind):
-		if not EmailSender.connected:
-			self.connect()
-		msg = MIMEMultipart()
-		msg["From"] = self.emailer.user
-		msg["To"] = self.emailer.receiver
-		msg["Subject"] = "Congratulations Master Lucas! You've got a new " + kind + "."
-		body = "Girl's information:\n"
-		body+= "Name: " + girl['name'] + "\n"
-		body+= "Age: " + str(girl['age']) + "\n"
-		body+= "Bio: " + girl['bio'] + "\n"
-		body+= "And most importantly, her photos are attached to this email.\n"
-		if kind == 'match':
-			body+= "Don't forget to submit your intentions to me.\n\n"
-		elif kind =='date':
-			body+= "Good Luck talking to the woman, you might need it.\n\n"
-		body+= "Sincerily,\n"
-		body+= "Your Bot."
-		msg.attach(MIMEText(body,'plain'))
-		photos_file = handle_girl_photos(girl['photos'])
-		attachment = open(photos_file,'rb')
-		part = MIMEBase('application','octet-stream')
-		part.set_payload((attachment).read())
-		encoders.encode_base64(part)
-		part.add_header('Content-Disposition',"attachment; filename= "+photos_file)
-		msg.attach(part)
-		self.content = msg.as_string()
-		if os.path.isdir("tmpdir"):
-			shutil.rmtree("tmpdir")
+		try:
+			if not Emailer.connected:
+				self.connect()
+			msg = MIMEMultipart()
+			msg["From"] = self.emailer.user
+			msg["To"] = self.emailer.receiver
+			msg["Subject"] = "Congratulations Master Lucas! You've got a new " + kind + "."
+			body = "Girl's information:\n"
+			body+= "Name: " + girl['name'] + "\n"
+			body+= "Age: " + str(girl['age']) + "\n"
+			body+= "Bio: " + girl['bio'] + "\n"
+			body+= "And most importantly, her photos are attached to this email.\n"
+			if kind == 'match':
+				body+= "Don't forget to submit your intentions to me.\n\n"
+			elif kind =='date':
+				body+= "Good Luck talking to the woman, you might need it.\n\n"
+			body+= "Sincerily,\n"
+			body+= "Your Bot."
+			msg.attach(MIMEText(body,'plain'))
+			photos_file = handle_girl_photos(girl['photos'])
+			attachment = open(photos_file,'rb')
+			part = MIMEBase('application','octet-stream')
+			part.set_payload((attachment).read())
+			encoders.encode_base64(part)
+			part.add_header('Content-Disposition',"attachment; filename= "+photos_file)
+			msg.attach(part)
+			self.content = msg.as_string()
+			if os.path.isdir("tmpdir"):
+				shutil.rmtree("tmpdir")
+		except:
+			self.disconnect()		
 
 
 	def make_alert_email(self):
-		if not EmailSender.connected:
-			self.connect()
-		msg = MIMEMultipart()
-		msg["From"] = self.emailer.user
-		msg["To"] = self.emailer.receiver
-		msg["Subject"] = "Master Lucas, its time to authenticate!"
-		body = "Please check if your server is on in so we can send you an SMS with your new token.\n"
-		body+= "If it is, please enter the code on your terminal.\n"
-		body+= "Sincerily,\n"
-		body+= "Your Bot."
-		msg.attach(MIMEText(body,'plain'))
-		self.content = msg.as_string()
+		try:
+			if not Emailer.connected:
+				self.connect()
+			msg = MIMEMultipart()
+			msg["From"] = self.emailer.user
+			msg["To"] = self.emailer.receiver
+			msg["Subject"] = "Master Lucas, its time to authenticate!"
+			body = "Please check if your server is on in so we can send you an SMS with your new token.\n"
+			body+= "If it is, please enter the code on your terminal.\n"
+			body+= "Sincerily,\n"
+			body+= "Your Bot."
+			msg.attach(MIMEText(body,'plain'))
+			self.content = msg.as_string()
+		except:
+			self.disconnect()	
 
 
 	def send_email(self):
-		if EmailSender.connected:    
+		if Emailer.connected:    
 			try:
-				EmailSender.connection.sendmail(self.emailer.user,self.emailer.receiver,self.content)
+				Emailer.connection.sendmail(self.emailer.user,self.emailer.receiver,self.content)
 			except SMTPRecipientsRefused as e:
 				refused = e.recipients
 				print("ERROR: "+str(e.recipients))
