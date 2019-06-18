@@ -154,17 +154,21 @@ class TinderBot:
 					
 
 	def onNewMessage(self, new_messages, match_id):
-		her_messages = get_her_messages(new_messages)
-		my_messages = get_my_messages(new_messages)
-		did_she_text_last = her_messages[-1] == new_messages[-1] if len(her_messages) != 0 else False
+		print(new_messages)
+		her_messages = get_her_messages(self.matches[match_id]['name'], new_messages)
+		my_messages = get_my_messages(self.matches[match_id]['name'], new_messages)
+		did_she_text_last = (her_messages[-1] == new_messages[-1]) if (len(her_messages) != 0) else False
 		if 'WRONG HOLE' in her_messages or 'WIERD' in her_messages: # unmatch person
 			print('ARE YOU HERE FOR REAL?')
 			self.current_matches.remove(match_id)
 			self.fix_id_file()
 			del self.matches[match_id]
 			return tinder_api.unmatch(match_id)
-		if did_she_text_last:	
-			if ('YES DADDY' in her_messages or 'LETS GO' in her_messages) and AUTOMATIC_MESSAGES['YES DADDY'] not in my_messages:
+		if 'MORE' == her_messages[-1]:
+				tinder_api.send_msg(match_id,create_message(self.matches[match_id]['name'], "more"))
+				print("MORE MESSAGE SENT")	
+		if did_she_text_last and AUTOMATIC_MESSAGES['YES DADDY'].rstrip('\n\r') not in my_messages:	# This means that I am talking to her now
+			if 'YES DADDY' in her_messages or 'LETS GO' in her_messages:
 				tinder_api.send_msg(match_id,create_message(self.matches[match_id]['name'],"YES DADDY"))
 				print("NEW DATE FOUND -- YES DADDY MESSAGE SENT")
 				self.emailer.connect() # Tell Lucas about new date
@@ -172,10 +176,7 @@ class TinderBot:
 				self.emailer.make_email(girl,'date')
 				self.emailer.send_email()
 				self.emailer.disconnect()
-			elif 'MORE' == her_messages[-1]:
-				tinder_api.send_msg(match_id,create_message(self.matches[match_id]['name'], "more"))
-				print("MORE MESSAGE SENT")
-			elif not AUTOMATIC_MESSAGES['YES DADDY'] not in my_messages: # This means that I am talking to her now
+			else: 
 				tinder_api.send_msg(match_id,create_message(self.matches[match_id]['name'],"invalid_reply"))			
 				print("INVALID REPLY MESSAGE SENT")
 

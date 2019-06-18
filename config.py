@@ -1,6 +1,6 @@
 tinder_token = "9ce93d54-8576-4493-bfd5-c283b3035b0d"
 host = 'https://api.gotinder.com'
-aws_host = "http://3.92.239.193"
+aws_host = "http://3.89.195.36"
 lucas_phone_number = '12269785884'
 
 

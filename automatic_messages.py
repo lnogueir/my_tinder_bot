@@ -15,3 +15,9 @@ AUTOMATIC_MESSAGES = {
 			"Note that these aren't in order of priority."
 			"To learn more, confirm with YES DADDY. If you want to unsubscribe type WRONG HOLE.")
 }
+
+
+
+
+
+

@@ -34,11 +34,19 @@ def create_message(girl_name, kind):
 	message += AUTOMATIC_MESSAGES[kind]
 	return message
 
-def get_her_messages(new_messages):
-	return [message for message in new_messages if (message != AUTOMATIC_MESSAGES['nerd'] and message != AUTOMATIC_MESSAGES['slut'] and message != AUTOMATIC_MESSAGES['invalid_reply'] and message != AUTOMATIC_MESSAGES['YES DADDY'] and message != AUTOMATIC_MESSAGES['more'])]
 
-def get_my_messages(new_messages):
-	return [message for message in new_messages if not (message != AUTOMATIC_MESSAGES['nerd'] and message != AUTOMATIC_MESSAGES['slut'] and message != AUTOMATIC_MESSAGES['invalid_reply'] and message != AUTOMATIC_MESSAGES['YES DADDY'] and message != AUTOMATIC_MESSAGES['more'])]
+
+#### FIXED 
+#JUST CHECK IF ANY OF THE MESSAGES WERE THE PRE MADE ONES
+def get_her_messages(girl_name, new_messages):
+	return [message.rstrip('\n\r') for message in new_messages if (create_message(girl_name,'slut').rstrip('\n\r')!=message.rstrip('\n\r') and message.rstrip('\n\r') != create_message(girl_name,'nerd').rstrip('\n\r') and create_message('Eda','invalid_reply').rstrip('\n\r')!=message.rstrip('\n\r') and message.rstrip('\n\r') != AUTOMATIC_MESSAGES['YES DADDY'].rstrip('\n\r') and message.rstrip('\n\r') != AUTOMATIC_MESSAGES['more'].rstrip('\n\r'))]
+
+
+def get_my_messages(girl_name, new_messages):
+	return [message.rstrip('\n\r') for message in new_messages if not (create_message(girl_name,'slut').rstrip('\n\r')!=message.rstrip('\n\r') and message.rstrip('\n\r') != create_message(girl_name,'nerd').rstrip('\n\r') and create_message('Eda','invalid_reply').rstrip('\n\r')!=message.rstrip('\n\r') and message.rstrip('\n\r') != AUTOMATIC_MESSAGES['YES DADDY'].rstrip('\n\r') and message.rstrip('\n\r') != AUTOMATIC_MESSAGES['more'].rstrip('\n\r'))]
+
+# Test message
+# all_messages = ['Hello Eda!! This is an automated message to remind you of your upcoming "Netflix and chill" appointment in the next week. To confirm your appointment text YES DADDY. To unsubscribe text WRONG HOLE.For more information type MORE. (Yes, it is case sensitive lool)\n', 'YES DADDY', 'Thank you for choosing us.\nLucas will reach you shortly.', 'Skskskjdhf', 'Wtf', '😂😂😂😂', "Sorry Eda, unrecognized message.\nPlease confirm with 'YES DADDY'.\nTo unsubscribe, text 'WRONG HOLE'.", "Sorry Eda, unrecognized message.\nPlease confirm with 'YES DADDY'.\nTo unsubscribe, text 'WRONG HOLE'.", "Sorry Eda, unrecognized message.\nPlease confirm with 'YES DADDY'.\nTo unsubscribe, text 'WRONG HOLE'.", 'Damn it bot, those last three messages werent supposed to be sent lool', 'So i see youve confirmed our session.', 'Is this correct Eda? 😅']
 
 
 
