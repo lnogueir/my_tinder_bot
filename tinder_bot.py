@@ -154,7 +154,6 @@ class TinderBot:
 					
 
 	def onNewMessage(self, new_messages, match_id):
-		print(new_messages)
 		her_messages = get_her_messages(self.matches[match_id]['name'], new_messages)
 		my_messages = get_my_messages(self.matches[match_id]['name'], new_messages)
 		did_she_text_last = (her_messages[-1] == new_messages[-1]) if (len(her_messages) != 0) else False

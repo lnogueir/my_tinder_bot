@@ -1,10 +1,10 @@
 AUTOMATIC_MESSAGES = {
 	"nerd" : (" This is an automated message to remind you of your date in the next week.\nYou and Lucas will go "
 		"to a field and get to know each other, then he will bring you to a restaurant which is to be defined.\n"
-		"To confirm your date please text LETS GO. To unsubscribe text WIERD and for more information "
+		"To confirm your date please text LETS GO. To unsubscribe text WIERD (auto unmatch) and for more information "
 		"type MORE. (Yes, it is case sensitive lool)"),
 	"slut" : (' This is an automated message to remind you of your upcoming "Netflix and chill" appointment '
-		'in the next week. To confirm your appointment text YES DADDY. To unsubscribe text WRONG HOLE.'
+		'in the next week. To confirm your appointment text YES DADDY. To unsubscribe text WRONG HOLE (auto unmatch).'
 		'For more information type MORE. (Yes, it is case sensitive lool)\n'),
 	"invalid_reply" : ", unrecognized message.\nPlease confirm with 'YES DADDY'.\nTo unsubscribe, text 'WRONG HOLE'.",
 	"YES DADDY" : "Thank you for choosing us.\nLucas will reach you shortly." ,
