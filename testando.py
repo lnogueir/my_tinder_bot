@@ -2,7 +2,7 @@ import tinder_api
 import requests
 import os
 
-l = []
+
 
 # open('match_ids.txt','w').close()
 # statistic = open('match_ids.txt','a')
@@ -16,11 +16,11 @@ l = []
 # print(l)
 # r.close()
 
-f = open('match_ids.txt','r')
-l = []
-for n in f:
-	l.append(n.rstrip("\n\r"))
-print(l)	
+# f = open('match_ids.txt','r')
+# l = []
+# for n in f:
+# 	l.append(n.rstrip("\n\r"))
+# print(l)	
 
 # recommendations = tinder_api.get_recs_v2()['data']['results']
 # for i,rec in enumerate(recommendations):
@@ -63,19 +63,22 @@ print(l)
 # print(type(response['will_unmatch']))
 
 ##Opens all my recommendeds photos on browse 
-# import webbrowser
-# try:
-# 	recommendations = tinder_api.get_recs_v2()['data']['results']
-# 	for i,rec in enumerate(recommendations):
-# 		photos = rec['user']['photos']
-# 		girl_id = rec['user']['_id']
-# 		print(tinder_api.like(girl_id))
-# 		for photo in photos:
-# 			url = photo['processedFiles'][0]['url']
-# 			webbrowser.open_new_tab(url)
-# 		break	
-# except:
-# 	print('ERROR')	
+import webbrowser
+import time
+try:
+	recommendations = tinder_api.get_recs_v2()['data']['results']
+	for i,rec in enumerate(recommendations):
+		photos = rec['user']['photos']
+		girl_id = rec['user']['_id']
+		for photo in photos:
+			url = photo['processedFiles'][0]['url']
+			webbrowser.open_new_tab(url)
+			time.sleep(2)
+		if i%3==0:
+			recommendations = tinder_api.get_recs_v2()['data']['results']	
+		time.sleep(2)	
+except:
+	print('ERROR')	
 ##
 
 ## Getting messages from match

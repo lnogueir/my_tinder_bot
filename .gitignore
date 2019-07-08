@@ -1,5 +1,7 @@
 tinder_env
 
 __pycache__
+config.*
+automatic_messages.py
 
 *.pyc

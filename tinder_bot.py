@@ -18,6 +18,8 @@ import json, requests
 # MENSAGEM E QUE TIPO DE MENSAGEM QUE EU MANDO OU SE EU VOU QUERER DAR UNMATCH
 
 
+## AFTER I NEED TO MAKE CLASSES FOR THESE BIG MEMBER VARIABLES
+
 class TinderBot:
 	def __init__(self):
 		self.statistics	= {'total_matches' : 0, 'swipes': 0, 'cur_matches': 0, 'match_rate' : 0}
@@ -41,7 +43,37 @@ class TinderBot:
 		self.matches = {}
 		self.last_like_at = None
 		self.last_auth_at = None
+		track_time = "track_time.txt"
+		if os.path.exists(track_time) and os.stat(track_time).st_size != 0:
+			with open(track_time, 'r') as track_f:
+				for i,time in enumerate(track_f): # this iterate only twice
+					if i == 0:
+						self.last_like_at = datetime.strptime(time.split('@')[1].rstrip('\n\r'), '%m/%d/%y %H:%M:%S')
+					if i == 1:
+						self.last_auth_at = datetime.strptime(time.split('@')[1].rstrip('\n\r'), '%m/%d/%y %H:%M:%S')		
+		else:
+			f = open(track_time,'w')
+			f.write('last_liked@none\n')
+			f.write('last_auth@none\n')
+			f.close()				
 		self.emailer = Emailer()
+
+
+	def fix_time_file(self): # True if fixing liking time, false if auth time
+		date_time = datetime.now().strftime('%m/%d/%y %H:%M:%S')
+		f = open('track_time.txt','r')
+		l=[]
+		for line in f:
+			l.append(line.split('@'))
+		f.close()
+		f = open('track_time.txt','w')
+		l[0][1] = self.last_like_at.strftime('%m/%d/%y %H:%M:%S') if self.last_like_at else None
+		l[1][1] = self.last_auth_at.strftime('%m/%d/%y %H:%M:%S') if self.last_auth_at else None
+		for line in l:
+			append_to_file = line[1] if line[1] else 'none'
+			f.write(line[0]+'@'+append_to_file+'\n')
+		f.close()	
+
 
 
 	def isSwipeTime(self):
@@ -87,13 +119,14 @@ class TinderBot:
 					track_iterator+=1 
 					if track_iterator == LIKES_LIMIT: # Check if its time to stop liking
 						self.last_like_at = datetime.now()
+						self.fix_time_file()
 						self.update_statistics_file()
 						break
 										
 					time.sleep(10)	
 			print('DONE LIKING')		
 		except:
-			print('ERROR')
+			print('COULD NOT FINISH LIKING')
 
 
 	def isNewMatch(self,match_id):
@@ -132,6 +165,7 @@ class TinderBot:
 			self.emailer.make_email(girl,'match')
 			self.emailer.send_email()
 			self.emailer.disconnect()
+			print('NEW MATCH')
 			while not self.isLucasOn():
 				time.sleep(10)
 			try:
@@ -180,7 +214,11 @@ class TinderBot:
 				print("INVALID REPLY MESSAGE SENT")
 
 	def update(self):
-		matches = tinder_api.get_updates()['matches']
+		try:
+			matches = tinder_api.get_updates()['matches']		
+		except:
+			print('COULD NOT UPDATE')
+		time.sleep(1)	
 		self.statistics['cur_matches'] = len(matches)
 		for match in matches:
 			match_id = match['_id']
@@ -234,6 +272,7 @@ class TinderBot:
 			try:
 				tr = tinder_api.get_self()
 				while 'error' in tr:
+					print('ERROR WITH TOKEN')
 					tell_lucas = requests.get(config.aws_host + '/failure')
 					log_code = sendCode(config.lucas_phone_number)
 					r = requests.get(config.aws_host + '/auth_code')
@@ -245,6 +284,7 @@ class TinderBot:
 				tell_lucas = requests.get(config.aws_host + '/success')
 				print("NEW TOKEN UPDATED SUCCESSFULLY")
 				self.last_auth_at = datetime.now()
+				self.fix_time_file()
 			except:
 				print('ERROR AUTHENTICATING')
 				exit()	
@@ -254,8 +294,8 @@ class TinderBot:
 		while True:
 			if self.isAuthTime():
 				self.handle_authentication()
-			# if self.isSwipeTime():
-			# 	self.swipe_right()
+			if self.isSwipeTime():
+				self.swipe_right()
 			print('UPDATING')	
 			self.update()
 			time.sleep(10)	
