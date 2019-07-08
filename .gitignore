@@ -1,7 +1,11 @@
 tinder_env
-EmailAccount.py	
+
+EmailAccount.py
+	
 __pycache__
+
 config.*
+
 automatic_messages.py
 
 *.pyc
