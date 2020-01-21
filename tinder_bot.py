@@ -1,21 +1,12 @@
 
-## My files ##
 import config, tinder_api 
 from emailer import Emailer
 from helpers import get_girls_age, create_message, get_her_messages, get_my_messages
 from phone_auth_token import sendCode, getToken
 from automatic_messages import AUTOMATIC_MESSAGES
-##
-
 from datetime import datetime
 import os, csv, time
 import json, requests
-
-## NEW IDEA
-# RODAR UM SERVIDOR NO MEU PC ENQUANTO O BOT FICA RODANDO NO PC VELHO, SE DER MATCH ELE DA UM REQUEST
-# NO MEU SERVIDOR QUE VAI ABRIR TODAS AS FOTOS DESSE MATCH E MANDAR UM EMAIL E AO MESMO TEMPO VAI PEDIR
-# UMA RESPOSTA MINHA, ESSA RESPOSTA VAI NO RESPONSE DIZENDO SIM OU NAO, PARA VER SE VOU QUERER MANDAR A
-# MENSAGEM E QUE TIPO DE MENSAGEM QUE EU MANDO OU SE EU VOU QUERER DAR UNMATCH
 
 
 ## AFTER I NEED TO MAKE CLASSES FOR THESE BIG MEMBER VARIABLES
