@@ -9,7 +9,7 @@ import os, csv, time
 import json, requests
 
 
-## AFTER I NEED TO MAKE CLASSES FOR THESE BIG MEMBER VARIABLES
+# TODO: MAKE CLASSES FOR THESE BIG MEMBER VARIABLES
 
 class TinderBot:
 	def __init__(self):
